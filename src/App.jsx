@@ -3,41 +3,46 @@ import Navbar from "./components/Navbar";
 import ExplorePage from "./components/ExplorePage";
 import PromptDetailPage from "./components/PromptDetailPage";
 import PricingPage from "./components/PricingPage";
-import LandingPage from "./components/LandingPage"; // assume exists
-import Dashboard from "./components/Dashboard";     // assume exists
-import PromptEditor from "./components/PromptEditor"; // assume exists
-import mockPrompts from "./mockPrompts";            // your mock data
+import LandingPage from "./components/LandingPage";
+import Dashboard from "./components/Dashboard";
+import PromptEditor from "./components/PromptEditor";
+import mockPrompts from "./mockPrompts";
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState("landing");
   const [selectedPrompt, setSelectedPrompt] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState({ name: "", email: "" });
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-slate-950 text-white">
       <Navbar
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
+        setUser={setUser}
       />
-      {currentPage === "landing" && <LandingPage />}
-      {currentPage === "dashboard" && <Dashboard />}
-      {currentPage === "editor" && <PromptEditor />}
-      {currentPage === "explore" && (
+
+      {/* Conditional rendering of pages */}
+      {!isLoggedIn && currentPage === "landing" && <LandingPage />}
+
+      {isLoggedIn && currentPage === "dashboard" && <Dashboard user={user} />}
+      {isLoggedIn && currentPage === "editor" && <PromptEditor />}
+      {isLoggedIn && currentPage === "explore" && (
         <ExplorePage
           mockPrompts={mockPrompts}
           setSelectedPrompt={setSelectedPrompt}
           setCurrentPage={setCurrentPage}
         />
       )}
-      {currentPage === "prompt-detail" && (
+      {isLoggedIn && currentPage === "prompt-detail" && (
         <PromptDetailPage
           selectedPrompt={selectedPrompt}
           setCurrentPage={setCurrentPage}
         />
       )}
-      {currentPage === "pricing" && <PricingPage />}
+      {isLoggedIn && currentPage === "pricing" && <PricingPage />}
     </div>
   );
 };
