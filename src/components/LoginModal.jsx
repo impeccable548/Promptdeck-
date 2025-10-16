@@ -2,13 +2,12 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
 const LoginModal = ({ onClose, setIsLoggedIn, setUser }) => {
-  const [form, setForm] = useState({ name: "", email: "" });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleLogin = () => {
-    if (form.name.trim() === "" || form.email.trim() === "") return;
-
-    // save user info
-    setUser(form);
+    if (!name.trim() || !email.trim()) return;
+    setUser({ name, email });
     setIsLoggedIn(true);
     onClose();
   };
@@ -45,16 +44,16 @@ const LoginModal = ({ onClose, setIsLoggedIn, setUser }) => {
 
               <input
                 type="text"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name..."
                 className="w-full p-3 mb-3 rounded-xl bg-slate-800 border border-slate-700 text-white outline-none focus:ring-2 focus:ring-blue-500"
               />
 
               <input
                 type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email..."
                 className="w-full p-3 mb-4 rounded-xl bg-slate-800 border border-slate-700 text-white outline-none focus:ring-2 focus:ring-blue-500"
               />
