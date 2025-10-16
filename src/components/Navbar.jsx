@@ -3,9 +3,22 @@ import { useState } from "react";
 import { Menu, X, User } from "lucide-react";
 import LoginModal from "./LoginModal";
 
-const Navbar = ({ currentPage, setCurrentPage, isLoggedIn, setIsLoggedIn }) => {
+const Navbar = ({
+  currentPage,
+  setCurrentPage,
+  isLoggedIn,
+  setIsLoggedIn,
+  userData,
+  setUserData,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserData({ name: "", email: "" });
+    setCurrentPage("landing");
+  };
 
   return (
     <>
@@ -48,12 +61,17 @@ const Navbar = ({ currentPage, setCurrentPage, isLoggedIn, setIsLoggedIn }) => {
               <User size={18} /> Login
             </button>
           ) : (
-            <button
-              onClick={() => setIsLoggedIn(false)}
-              className="text-red-400 hover:text-red-500"
-            >
-              Logout
-            </button>
+            <div className="flex items-center gap-3">
+              <span className="text-slate-300 text-sm">
+                {userData?.name || "User"}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-red-400 hover:text-red-500 text-sm"
+              >
+                Logout
+              </button>
+            </div>
           )}
 
           {/* Mobile Menu Toggle */}
@@ -90,7 +108,11 @@ const Navbar = ({ currentPage, setCurrentPage, isLoggedIn, setIsLoggedIn }) => {
 
       {/* Login Modal */}
       {showLogin && (
-        <LoginModal onClose={() => setShowLogin(false)} setIsLoggedIn={setIsLoggedIn} />
+        <LoginModal
+          onClose={() => setShowLogin(false)}
+          setIsLoggedIn={setIsLoggedIn}
+          setUserData={setUserData}
+        />
       )}
     </>
   );
